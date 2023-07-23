@@ -32,39 +32,36 @@ st.markdown("<h2 style='color: green; font-style: italic; font-family: Comic San
 st.markdown("<p style='color: #4FC978; font-style: italic; font-family: Comic Sans MS; ' > Ready to be a Green Explorer? Spot an object at home 🌿🏠, upload its pic, and win rewards 🏆! Learn how it helps the environment or can be recycled!</p>", unsafe_allow_html=True)
 
 
-# object_template = PromptTemplate(
-#     input_variables=['type'],
-#     template='Give one {type} object name from the list: bicycle, plant, paper, cup, bowl, pens, bags, books, chair, or fan.'
-# )
-# #  and is either recyclable or commonly available
+object_template = PromptTemplate(
+    input_variables=['type'],
+    template='Give one {type} object name like bicycle, plant, paper, cup, bowl, pens, bags, books, chair, or fan.'
+)
+
 
 llm = OpenAI(temperature=0.9)
 
-# object_chain = LLMChain(llm=llm, prompt=object_template, verbose=True, output_key='object')
+object_chain = LLMChain(llm=llm, prompt=object_template, verbose=True, output_key='object')
 
 obj_list = ['bicycle']
             # , 'plant', 'paper', 'cup', 'bowl', 'pens', 'bags', 'books', 'chair', 'fan']
 
 st.markdown("<p style='color: #4FC978; font-style: italic; font-family: Comic Sans MS; ' >'Click 👇 to get the name of object' </p>", unsafe_allow_html=True)
 if st.button("Get object name"):
-    # prompt = "eco-friendly"
-    # object = object_chain.run(prompt)
-    num= random.randint(0,len(obj_list)-1)
+    prompt = "eco-friendly"
+    object = object_chain.run(prompt)
     st.write(':green[Find 🔍 the object given]')
-    # object = obj_list[num]
-    object = 'bicycle'
     st.write(object)
 
 st.write("💭")
 st.write("💭")
 
 
-# check_template = PromptTemplate(
-#         input_variables=['object','list'],
-#         template='Check if {object} serves a similar purpose as any object in the list {list}. If yes, return True; otherwise, return False.'
-#     )
+check_template = PromptTemplate(
+        input_variables=['object','list'],
+        template='Check if {object} serves a similar purpose as any object in the list {list}. If yes, return True; otherwise, return False.'
+    )
 
-# check_chain = LLMChain(llm=llm, prompt=check_template, verbose=True, output_key='check')
+check_chain = LLMChain(llm=llm, prompt=check_template, verbose=True, output_key='check')
 
 
 uploaded_file = st.file_uploader(':green[Upload the image 👇]')
@@ -90,7 +87,7 @@ if uploaded_file is not None:
         st.write(o)
     check = True
 
-    # check = check_chain.run(object=object, list=object_list)
+    check = check_chain.run(object=object, list=object_list)
 
 info_template = PromptTemplate(
         input_variables=['object'],
@@ -99,27 +96,16 @@ info_template = PromptTemplate(
 
 info_chain = LLMChain(llm=llm, prompt=info_template, verbose=True, output_key='info')
 
-# # if st.button("Check"):
-# #     check = check_chain.run(object,object_list)
-# #     if check == "True":
-# #         st.balloons()
-# #         st.success("Yeh you found the object 🎉🎉")
-# #         st.write("Lets learn more 🌞")
-# #         info = info_chain.run(object)
-# #         st.write(info)
-# #     else:
-# #         st.write("try again")
-
-if check == True:
+if check == "True":
     st.balloons()
     st.success("Yeh you found the object 🎉🎉")
     st.write("Lets learn more 🌞")
-    info = info_chain.run("bicycle")
+    info = info_chain.run(object)
     st.write(info)
+else:
+    st.write("try again")
 
-else :
-    st.write("Lets do it!")
-    
+
      
 
 
