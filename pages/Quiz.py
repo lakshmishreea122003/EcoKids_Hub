@@ -69,13 +69,11 @@ if prompt:
      st.write(ans[1])
      st.write("")
      answer = st.text_input('Enter the quiz-topic answer here 🌱📝')
-     time.sleep(5)
-     st.write("Yeh you are right")
-     st.balloons()
      
-    #  if answer.strip().lower() == correct.get("correct").strip().lower() :
-    #     st.write("Yeh you are right")
-    #     st.balloons()
+   
+     if answer.strip().lower() == correct.get("correct").strip().lower() :
+        st.write("Yeh you are right")
+        st.balloons()
 
    
 
